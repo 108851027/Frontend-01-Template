@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #box {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            align-items: flex-end;
+            border: 1px solid red;
+            height: 200px;
+        }
+
+        .bar {
+            border: 1px solid black;
+            height: 57px;
+        }
+
+        .item {
+            flex-grow: 1;
+            border:1px solid green;
+            /* transition: height .5s; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="box">
+
+
+    </div>
+
+
+
+</body>
+<script>
+    /*快速排序，快排的同时排列div 
+     */
+    function quicksort(array, start, end) {
+
+        if (start > end) return;
+        var pivot = findpivot(array, start, end);
+
+        //quicksort(array,start,pivot-1)
+        //quicksort(array,pivot+1,end);
+
+        setTimeout(_quicksort(array, start, pivot - 1), 1000)
+        setTimeout(_quicksort(array, pivot + 1, end), 1000)
+
+
+
+    }
+
+    function _quicksort(array, start, end) {
+        return function () {
+            quicksort(array, start, end)
+        }
+    }
+
+    function findpivot(array, start, end) {
+        var pivot = end
+        var count = start
+        document.getElementById('order_' + pivot).style.background = 'red'
+        for (var i = start; i < end; i++) {
+            if (array[i] < array[pivot]) {
+                //sleep(10)
+                // console.log(array)
+                var temp = array[i];
+                array[i] = array[count];
+                array[count] = temp;
+                // console.log(array)
+
+                swapDivHeightByID('order_' + i, 'order_' + count)
+                //setTimeout ('swapDivHeightByID('+'"order_'+i+'",'+'"order_'+count+'")',1)
+                // debugger
+                count++
+            }
+        }
+        var temp = array[pivot];
+        array[pivot] = array[count];
+        array[count] = temp;
+
+        swapDivHeightByID("order_" + pivot, "order_" + count)
+        document.getElementById('order_' + pivot).style.background = 'white'
+        document.getElementById('order_' + count).style.background = 'red'
+        return count;
+
+    }
+
+    function swapDivHeightByID(idx, idy) {
+        var temp = document.getElementById(idx).style.height
+        document.getElementById(idx).style.height = document.getElementById(idy).style.height
+        document.getElementById(idy).style.height = temp
+
+    }
+
+    function random_init() {
+        var heights = new Array()
+        // for (var i = 0; i < 100; i++) {
+        //     var height = Math.floor((Math.random() * 100)) + 10
+        //     heights.push(height)
+
+        //     var a_div_bar = document.createElement("div")
+        //     a_div_bar.setAttribute("id", 'order_' + i)
+        //     a_div_bar.classList.add('item')
+        //     //a_div_bar.innerHTML=height
+        //     a_div_bar.style.height = height + 'px'
+        //     // a_div_bar.style.border = "1px solid green"
+        //     document.getElementById("box").appendChild(a_div_bar)
+        // }
+        var htmlStr  = ""
+        for(var i = 0;i<100;i++){
+            var height = Math.floor((Math.random() * 100)) + 10
+            heights.push(height)
+            htmlStr+= `<div id="order_${i}" class="item" style="height:${height}px;"></div>`
+        }
+
+        document.getElementById("box").innerHTML  = htmlStr
+        return heights
+
+    }
+
+
+    var heights = random_init()
+    quicksort(heights, 0, heights.length - 1)
+</script>   
+
+</html>
