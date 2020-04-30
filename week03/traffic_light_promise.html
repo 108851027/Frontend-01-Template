@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #traffic_light {
+        background-color: blue;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+</style>
+
+<body>
+    <div id="traffic_light"></div>
+    <button id='switcher'>start</button>
+</body>
+<script>
+    let continue_run = false;
+    let button = document.getElementById("switcher");
+
+    function click() {
+        if (continue_run == false) {
+            continue_run = true
+            changeColor("red", 2000)
+            button.innerHTML = "stop"
+        } else {
+            continue_run = false
+            button.innerHTML = "start"
+        }
+    };
+    button.addEventListener("click", click);
+    button.addEventListener("click", function() {
+        console.log('a')
+    });
+
+    function changeColor(color, duration) {
+        console.log(color)
+        let e = document.getElementById("traffic_light");
+        e.style.backgroundColor = color
+        if (color == 'red') {
+            return new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    resolve();
+                    if (continue_run) changeColor('yellow', 2000)
+                }, duration);
+            });
+        }
+        if (color == 'yellow') {
+            return new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    resolve();
+                    if (continue_run) changeColor('blue', 1000)
+                }, duration);
+            });
+        }
+        if (color == 'blue') {
+            return new Promise(function(resolve, reject) {
+                setTimeout(function() {
+                    resolve();
+                    if (continue_run) changeColor('red', 3000)
+                }, duration);
+            });
+        }
+    }
+</script>
+
+
+</html>
